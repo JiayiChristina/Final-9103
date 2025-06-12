@@ -34,6 +34,12 @@ const decorations = [
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noLoop();
+  let resetBtn = createButton('Reset');
+  resetBtn.position(20, 20); 
+  resetBtn.mousePressed(() => {
+    isHidden = new Array(circles.length).fill(false); 
+    redraw();
+  });
 }
 
 function windowResized() {
