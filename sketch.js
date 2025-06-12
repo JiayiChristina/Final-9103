@@ -1,4 +1,3 @@
-let rotationCount = 0;
 let circles = [
   [54, 48], [172, 25], [292, 3], [28, 160], [140, 136], [254, 110], [378, 80],
   [-8, 268], [108, 248], [224, 220], [340, 192], [64, 356], [184, 340], [304, 308],
@@ -9,76 +8,77 @@ let circles = [
 const RADIUS = 54;
 
 function setup() {
-  createCanvas(400, 400);
-
-  //First draw the symmetrical corner background: the upper left half is white, the lower right half is black
-  noStroke();
-  //The "upper left half" is represented by the triangle (0,0), (400,0), (0,400) x+y <= 400
-  fill(255);
-  triangle(0, 0, 400, 0, 0, 400);
-  //The "lower right half" is represented by the triangle (400,400), (400,0), (0,400) x+y >= 400
-  fill(0);
-  triangle(400, 400, 400, 0, 0, 400);
-
-  //white circles
-  noStroke();
-  fill(255);
-  for (let i = 0; i < circles.length; i++) {
-    const [x, y] = circles[i];
-    ellipse(x, y, RADIUS * 2, RADIUS * 2);
-  }
+  createCanvas(windowWidth, windowHeight);
   noLoop();
+}
+
+function windowResized() {
+  //Reset the canvas and redraw when the window changes
+  resizeCanvas(windowWidth, windowHeight);
+  redraw();
 }
 
 function draw() {
   background(255);
+
+  const baseSize = 400;
+  const s = min(width / baseSize, height / baseSize);
+
+  //Scale and center the 400×400 stage
   push();
-  translate(width / 2, height / 2);
-  rotate(PI * rotationCount);
-  translate(-width / 2, -height / 2);
-  // Draw black and white background 
-  noStroke();
-  fill(255);
-  triangle(0, 0, 400, 0, 0, 400);
-  fill(0);
-  triangle(400, 400, 400, 0, 0, 400);
+    translate((width  - baseSize * s) / 2, (height - baseSize * s) / 2);
+    scale(s);
+
+    /**
+     * First save the current canvas state, start a new path and define the clipping area with a rectangle of (0,0)-(baseSize,baseSize), 
+     * then call clip() so that subsequent drawing is only visible inside the rectangle.
+     */
+    drawingContext.save();
+    drawingContext.beginPath();
+    drawingContext.rect(0, 0, baseSize, baseSize);
+    drawingContext.clip();
+    
+    //background
+    noStroke();
+    fill(255);
+    triangle(0,0,400,0,0,400);
+    fill(0);
+    triangle(400,400,400,0,0,400);
+
+    //circles
+    noStroke();
+    fill(255);
+    for (let [x,y] of circles) {
+      ellipse(x,y, RADIUS*2, RADIUS*2);
+    }
+
+    drawSunMoon(254, 110);
+    drawSunMoon(54, 48);
+
+    drawEgg(140, 136);
+    drawEgg(-8, 268);
+
+    drawGreenCircle(108, 248);
+    drawGreenCircle(292, 3);
+
+    drawBlueCircle(28, 160);
+    drawBlueCircle(172, 25);
+
+    drawConcentricCircles(340,192);
+    drawConcentricCircles(184,340);
+
+    drawFlawerCircles(64,356);
+    drawFlawerCircles(304,308);
+
+    drawSectorCircles(224,220);
+    drawSectorCircles(420,284);
+
+    drawBlackCircles(378,80);
+    drawBlackCircles(260,428);
+
+    drawRedCircle(380,400);
   pop();
-
-  // redraw white circles 
-  noStroke();
-  fill(255);
-  for (let i = 0; i < circles.length; i++) {
-    const [x, y] = circles[i];
-    ellipse(x, y, RADIUS * 2, RADIUS * 2);
-  }
-
-  drawSunMoon(254, 110);
-  drawSunMoon(54, 48);
-
-  drawEgg(140, 136);
-  drawEgg(-8, 268);
-
-  drawGreenCircle(108, 248);
-  drawGreenCircle(292, 3);
-
-  drawBlueCircle(28, 160);
-  drawBlueCircle(172, 25);
-
-  drawConcentricCircles(340,192);
-  drawConcentricCircles(184,340);
-
-  drawFlawerCircles(64,356);
-  drawFlawerCircles(304,308);
-
-  drawSectorCircles(224,220);
-  drawSectorCircles(420,284);
-
-  drawBlackCircles(378,80);
-  drawBlackCircles(260,428);
-
-  drawRedCircle(380,400)
 }
-
 
 //Drawing on drawSunMoon(252, 108) and drawSunMoon(54,52)
 function drawSunMoon(cx, cy) {
@@ -665,10 +665,3 @@ function drawRedCircle(cx, cy) {
   noStroke();
 }
 
-// check keyboard space state
-function keyPressed() {
-  if (key === ' ') {
-    rotationCount = (rotationCount + 1) % 2;
-    redraw();
-  }
-}
