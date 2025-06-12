@@ -1,3 +1,23 @@
+let hoverIndex = -1;
+// Detect the position where the mouse hovers
+function detectHover() {
+  const baseSize = 400;
+  const s = min(width / baseSize, height / baseSize);
+  const offsetX = (width  - baseSize * s) / 2;
+  const offsetY = (height - baseSize * s) / 2;
+  let mx = (mouseX - offsetX) / s;
+  let my = (mouseY - offsetY) / s;
+  hoverIndex = -1;
+  for (let i = 0; i < circles.length; i++) {
+    if (isHidden[i]) continue;
+    const [x, y] = circles[i];
+    let d = dist(mx, my, x, y);
+    if (d < RADIUS) {
+      hoverIndex = i;
+      break;
+    }
+  }
+}
 let circles = [
   [54, 48], [172, 25], [292, 3], [28, 160], [140, 136], [254, 110], [378, 80],
   [-8, 268], [108, 248], [224, 220], [340, 192], [64, 356], [184, 340], [304, 308],
@@ -48,6 +68,8 @@ function windowResized() {
   redraw();
 }
 function draw() {
+  // Call the detectHover function to detect the mouse position
+  detectHover();
   background(255);
 
   const baseSize = 400;
@@ -82,10 +104,20 @@ function draw() {
     // Draw circles and decorations using a loop
     for (let i = 0; i < circles.length; i++) {
       if (!isHidden[i]) {
-        noStroke();
-        fill(255);
-        ellipse(circles[i][0], circles[i][1], RADIUS * 2, RADIUS * 2);
-        decorations[i].fn(...decorations[i].args);
+        push();
+          // Enlarge the pattern at the position where the mouse hovers
+          translate(circles[i][0], circles[i][1]);
+          if (i === hoverIndex) {
+            // Enlarge to 1.05 times the original size
+            scale(1.05);
+          } else {
+            scale(1.0);
+          }
+          noStroke();
+          fill(255);
+          ellipse(0, 0, RADIUS * 2, RADIUS * 2);
+          decorations[i].fn(0, 0);
+        pop();
       }
     }
   pop();
@@ -701,4 +733,8 @@ function mousePressed() {
       break; 
     }
   }
+}
+// update the screen
+function mouseMoved() {
+  redraw();
 }
