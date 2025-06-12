@@ -58,33 +58,33 @@ function draw() {
     for (let [x,y] of circles) {
       ellipse(x,y, RADIUS*2, RADIUS*2);
     }
+    // keep other do not change
+    drawSunMoon(254, 110);
+    drawSunMoon(54, 48);
+
+    drawEgg(140, 136);
+    drawEgg(-8, 268);
+
+    drawGreenCircle(108, 248);
+    drawGreenCircle(292, 3);
+
+    drawBlueCircle(28, 160);
+    drawBlueCircle(172, 25);
+
+    drawConcentricCircles(340,192);
+    drawConcentricCircles(184,340);
+
+    drawFlawerCircles(64,356);
+    drawFlawerCircles(304,308);
+
+    drawSectorCircles(224,220);
+    drawSectorCircles(420,284);
+
+    drawBlackCircles(378,80);
+    drawBlackCircles(260,428);
+
+    drawRedCircle(380,400);
   pop();
-// keep other do not change
-  drawSunMoon(254, 110);
-  drawSunMoon(54, 48);
-
-  drawEgg(140, 136);
-  drawEgg(-8, 268);
-
-  drawGreenCircle(108, 248);
-  drawGreenCircle(292, 3);
-
-  drawBlueCircle(28, 160);
-  drawBlueCircle(172, 25);
-
-  drawConcentricCircles(340,192);
-  drawConcentricCircles(184,340);
-
-  drawFlawerCircles(64,356);
-  drawFlawerCircles(304,308);
-
-  drawSectorCircles(224,220);
-  drawSectorCircles(420,284);
-
-  drawBlackCircles(378,80);
-  drawBlackCircles(260,428);
-
-  drawRedCircle(380,400);
 }
 
 //Drawing on drawSunMoon(252, 108) and drawSunMoon(54,52)
