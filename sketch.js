@@ -1,4 +1,4 @@
-let rotated = false;
+let rotationCount = 0;
 let circles = [
   [54, 48], [172, 25], [292, 3], [28, 160], [140, 136], [254, 110], [378, 80],
   [-8, 268], [108, 248], [224, 220], [340, 192], [64, 356], [184, 340], [304, 308],
@@ -32,18 +32,19 @@ function setup() {
 
 function draw() {
   background(255);
-  if (rotated) {
-    translate(width / 2, height / 2);
-    rotate(PI);
-    translate(-width / 2, -height / 2);
-  }
+  push();
+  translate(width / 2, height / 2);
+  rotate(PI * rotationCount);
+  translate(-width / 2, -height / 2);
   // Draw black and white background 
   noStroke();
   fill(255);
   triangle(0, 0, 400, 0, 0, 400);
   fill(0);
   triangle(400, 400, 400, 0, 0, 400);
-  // white circle
+  pop();
+
+  // redraw white circles 
   noStroke();
   fill(255);
   for (let i = 0; i < circles.length; i++) {
@@ -664,10 +665,10 @@ function drawRedCircle(cx, cy) {
   noStroke();
 }
 
-
+// check keyboard space state
 function keyPressed() {
   if (key === ' ') {
-    rotated = !rotated;
+    rotationCount = (rotationCount + 1) % 2;
     redraw();
   }
 }
