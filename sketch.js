@@ -1,3 +1,4 @@
+let rotated = false;
 let circles = [
   [54, 48], [172, 25], [292, 3], [28, 160], [140, 136], [254, 110], [378, 80],
   [-8, 268], [108, 248], [224, 220], [340, 192], [64, 356], [184, 340], [304, 308],
@@ -30,6 +31,26 @@ function setup() {
 }
 
 function draw() {
+  background(255);
+  if (rotated) {
+    translate(width / 2, height / 2);
+    rotate(PI);
+    translate(-width / 2, -height / 2);
+  }
+  // Draw black and white background 
+  noStroke();
+  fill(255);
+  triangle(0, 0, 400, 0, 0, 400);
+  fill(0);
+  triangle(400, 400, 400, 0, 0, 400);
+  // white circle
+  noStroke();
+  fill(255);
+  for (let i = 0; i < circles.length; i++) {
+    const [x, y] = circles[i];
+    ellipse(x, y, RADIUS * 2, RADIUS * 2);
+  }
+
   drawSunMoon(254, 110);
   drawSunMoon(54, 48);
 
@@ -643,3 +664,10 @@ function drawRedCircle(cx, cy) {
   noStroke();
 }
 
+
+function keyPressed() {
+  if (key === ' ') {
+    rotated = !rotated;
+    redraw();
+  }
+}
