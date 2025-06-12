@@ -8,6 +8,28 @@ let circles = [
 const RADIUS = 54;
 // Record the color status
 let rotationCount = 0;
+//Record whether the pattern is hidden
+let isHidden = new Array(circles.length).fill(false); 
+// Create an array to record all the drawn graphics and positions
+const decorations = [
+  { fn: drawSunMoon, args: [54, 48] },
+  { fn: drawSunMoon, args: [172, 25] },
+  { fn: drawGreenCircle, args: [292, 3] },
+  { fn: drawBlueCircle, args: [28, 160] },
+  { fn: drawEgg, args: [140, 136] },
+  { fn: drawSunMoon, args: [254, 110] },
+  { fn: drawBlackCircles, args: [378, 80] },
+  { fn: drawEgg, args: [-8, 268] },
+  { fn: drawGreenCircle, args: [108, 248] },
+  { fn: drawSectorCircles, args: [224, 220] },
+  { fn: drawConcentricCircles, args: [340, 192] },
+  { fn: drawFlawerCircles, args: [64, 356] },
+  { fn: drawConcentricCircles, args: [184, 340] },
+  { fn: drawFlawerCircles, args: [304, 308] },
+  { fn: drawSectorCircles, args: [420, 284] },
+  { fn: drawBlackCircles, args: [260, 428] },
+  { fn: drawRedCircle, args: [380, 400] }
+];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -19,7 +41,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   redraw();
 }
-
 function draw() {
   background(255);
 
@@ -52,38 +73,15 @@ function draw() {
       triangle(400,400,400,0,0,400);
     pop();
 
-    // white circles
-    noStroke();
-    fill(255);
-    for (let [x,y] of circles) {
-      ellipse(x,y, RADIUS*2, RADIUS*2);
+    // Draw circles and decorations using a loop
+    for (let i = 0; i < circles.length; i++) {
+      if (!isHidden[i]) {
+        noStroke();
+        fill(255);
+        ellipse(circles[i][0], circles[i][1], RADIUS * 2, RADIUS * 2);
+        decorations[i].fn(...decorations[i].args);
+      }
     }
-    // keep other do not change
-    drawSunMoon(254, 110);
-    drawSunMoon(54, 48);
-
-    drawEgg(140, 136);
-    drawEgg(-8, 268);
-
-    drawGreenCircle(108, 248);
-    drawGreenCircle(292, 3);
-
-    drawBlueCircle(28, 160);
-    drawBlueCircle(172, 25);
-
-    drawConcentricCircles(340,192);
-    drawConcentricCircles(184,340);
-
-    drawFlawerCircles(64,356);
-    drawFlawerCircles(304,308);
-
-    drawSectorCircles(224,220);
-    drawSectorCircles(420,284);
-
-    drawBlackCircles(378,80);
-    drawBlackCircles(260,428);
-
-    drawRedCircle(380,400);
   pop();
 }
 
@@ -677,5 +675,24 @@ function keyPressed() {
   if (key === ' ') {
     rotationCount = (rotationCount + 1) % 2;
     redraw();
+  }
+}
+// Determine whether the pattern is hidden by detecting whether the mouse is clicked
+function mousePressed() {
+  const baseSize = 400;
+  const s = min(width / baseSize, height / baseSize);
+  const offsetX = (width  - baseSize * s) / 2;
+  const offsetY = (height - baseSize * s) / 2;
+  let mx = (mouseX - offsetX) / s;
+  let my = (mouseY - offsetY) / s;
+  for (let i = 0; i < circles.length; i++) {
+    if (isHidden[i]) continue;
+    const [x, y] = circles[i];
+    let d = dist(mx, my, x, y);
+    if (d < RADIUS) {
+      isHidden[i] = true;
+      redraw();
+      break; 
+    }
   }
 }
