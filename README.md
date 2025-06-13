@@ -10,15 +10,9 @@ In the individual part of this assignment, I created the following three animate
 I chose keyboard and mouse input as the method for animating the images. First, I analysed the elements in the image and designed three types of animation interactions: pressing the space bar to switch between black and white backgrounds, clicking on a pattern to make it disappear, and moving the mouse over a corresponding pattern to enlarge it. Compared to the animations used by other members, which were triggered by time or music, my animation emphasises the user's sense of active control and experience.
 ### Inspiration
 
-<<<<<<< HEAD
 ![Click Bubbles Screenshot](Click_Bubbles.png)
 [Click Bubbles](https://bubble-shooter.co/click-bubbles)
 ![Let's Go Learn Screenshot](Let's_Go_Learn.png)
-=======
-![Click Bubbles Screenshot](Click Bubble.png)
-[Click Bubbles](https://bubble-shooter.co/click-bubbles)
-![Let's Go Learn Screenshot](Bubbles.png)
->>>>>>> 86624db19e9b51cb1338a7e956a6e7cba2416248
 [Let's Go Learn: Bubbles](https://frontend.letsgolearn.com/practice/bubbles#)
 
 In my design, I referenced two web games: Click Bubbles and Let's Go Learn: Bubbles. I drew inspiration from the design where, after the user clicks on a small ball, it immediately disappears. I applied this concept to my design. When the user clicks on a circular pattern, the pattern immediately disappears. This design provides users with a clean, clear, and timely feedback experience.
